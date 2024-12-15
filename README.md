@@ -380,7 +380,7 @@ GROUP BY 1;
 
  ![query9](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_result9.PNG)
  
- **Findings**: It looks like the custom lander has a lower bounce rate with 53,22% …success!
+ **Findings**: It looks like the custom lander has a lower bounce rate with 53,22%, success! 
  
  ---
 
@@ -438,6 +438,7 @@ GROUP BY WEEK(created_at);
  ![query10](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results10.PNG)
  
  **Findings**: The sessions have been completed to the new lander page(/lander) and overall bounce rate has also decreased.
+ 
   ---
 
 ### 11. Click Rates Across Key Pages
@@ -506,6 +507,7 @@ FROM total_sessions_for_each_page2;
  ![query11](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_result11.PNG)
  
  **Findings**: Looks like we should focus on the lander, Mr. Fuzzy page , and the billing page , which have the lowest click rates.
+ 
    ---
 
 ### 12. Conversion Rates for Billing Pages
@@ -828,38 +830,11 @@ GROUP BY 1,2;
 
  ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results19.PNG)
  
- **Findings**: Based on this analysis Cindy wants to launch a second product.
+ **Findings:** Based on this analysis Cindy wants to launch a second product.
 
 ---
 
-
- ### 22. Monthly Sales Overview
-**Objective:** Cindy Sharp(CEO) Wants to add live chat support to the website to improve our customer experience and need average website session volume, by hour of day and
-by day week to staff appropriately.
-
-**Query:**
-```sql
-
-SELECT 
-      YEAR(created_at) as Year,
-      MONTH(created_at) as MONTH,
-      COUNT(order_id) AS number_of_sales,
-      SUM(price_usd) AS total_revenue,
-      SUM(price_usd - cogs_usd) AS total_margin
-FROM order_items
-WHERE created_at < '2013-01-04' 
-GROUP BY 1,2;
-
-```
-**Query Result:**
-
- ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results19.PNG)
- 
- **Findings**: Based on this analysis Cindy wants to launch a second product.
-
----
-
- ### 23. Product Performance Metrics Comparison
+ ### 22. Product Performance Metrics Comparison
 **Objective:** A second product launched on January 6th. Analyzing total session, conv_rate, revenue per session, product one orders and product two orders
 
 **Query:**
@@ -886,10 +861,11 @@ GROUP BY 1,2;
 
  ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results20.PNG)
  
- **Findings**: Based on this analysis Cindy wants to launch a second product.
+ **Findings:** Product one consistently outperformed product two in orders throughout the analyzed period.
+
 ---
 
- ### 24. Product Performance Metrics Comparison
+ ### 23. Product Performance Metrics Comparison
 **Background:** Morgan Rockwell (Website Manager) wants look at sessions which hit the ‘/products’ page and see where they went next. Also, wants a comparison to the 3 months leading up to launch as a baseline
 
 **Query:**
@@ -958,7 +934,7 @@ GROUP BY time_period;
  
  ---
 
- ### 25. Next Pageview Metrics Post Product Launch  
+ ### 24. Next Pageview Metrics Post Product Launch  
 **Background:** Morgan wants further deep dive and wants to look into conversion funnels from each product page to conversion. A comparison between the two conversion funnels, for all website traffic.
 
 **Query:**
