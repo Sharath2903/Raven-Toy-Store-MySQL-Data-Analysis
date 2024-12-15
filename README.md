@@ -1012,7 +1012,34 @@ FROM summarizing;
  ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results22.PNG)
  
  **Findings**: Looks like the new product ‘Forever Love Bear’ was a great success. that the Love Bear has a better click rate to the ‘/cart’ page and comparable rates throughout the rest of the funnel.
+ 
 
+## Insights
 
+1. **Traffic Source Effectiveness**:
+   - The analysis revealed that the primary traffic source for Kraven Fuzzy Factory is "gsearch nonbrand," accounting for **282,706 sessions**, significantly outperforming other sources like "bsearch nonbrand" (54,909 sessions). This indicates a strong reliance on search engine marketing, particularly for non-branded queries.
+
+2. **Conversion Rate Challenges**:
+   - The conversion rate for "gsearch" traffic was found to be only **2.88%**, which is below the target threshold of **4%**. This suggests that while traffic volume is high, the effectiveness in converting visitors into customers needs improvement. Consequently, adjustments in bidding strategies were implemented to optimize performance.
+
+3. **Device Performance Disparities**:
+   - A comparative analysis of conversion rates by device type showed that desktop users had a significantly higher conversion rate (**4.14%**) compared to mobile users (**0.92%**). This disparity highlights the need for targeted marketing strategies that cater to desktop users while improving the mobile experience.
+
+4. **User Engagement and Bounce Rates**:
+   - The overall bounce rate was approximately **59.18%**, with specific landing pages like the homepage having a bounce rate of **58.34%**. High bounce rates indicate potential issues with user engagement and content relevance, prompting a need for further investigation into website design and content effectiveness.
+
+5. **Sales and Revenue Growth**:
+   - Sales data indicated a steady increase over the months following the product launch, with significant peaks during holiday seasons. This trend reflects successful marketing efforts and growing brand recognition, particularly in November when sales reached **618 orders**.
+
+6. **Impact of Product Launches**:
+   - Post-launch metrics showed an increase in next pageview percentages, suggesting that new product launches positively influence user navigation and engagement with additional products.
+
+## Conclusion
+
+The project successfully analyzed various aspects of Kraven Fuzzy Factory's eCommerce database, providing actionable insights into traffic sources, conversion rates, user engagement, and sales performance. Key findings indicate that while traffic is robust from search engines, there are significant opportunities to enhance conversion rates, particularly among mobile users.
+
+The insights gained from this analysis will guide future marketing strategies and website optimizations to improve user experience and drive higher conversion rates. Additionally, ongoing monitoring of traffic sources and user behavior will be essential to adapt strategies in response to changing market dynamics.
+
+In summary, this project lays a solid foundation for data-driven decision-making at Kraven Fuzzy Factory, enabling the company to refine its marketing efforts and enhance overall business performance as it continues to grow in the competitive eCommerce landscape.
  
 
