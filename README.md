@@ -43,50 +43,7 @@ the goal is to collaborate with the CEO, Head of Marketing, and Website Manager 
  
  ![query1](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/results_query1.PNG)
 
- ### 13. Conversion Rates for Billing Pages
-**Background:** Based on conversion funnel analysis, Morgan tested an updated billing page(/billing -2). She wants a comparison between the old vs new billing page.
-```sql
---Step 1: FInding the date in which the new billing page (/billing-2) was introduced
-
-SELECT
-      MIN(website_session_id)
-FROM
-      website_pageviews
-WHERE pageview_url = '/billing-2';
-
---Step 2: Finding the sessions having orders--
-CREATE temporary table billing_sessions_with_orders
-SELECT
-      website_pageviews.website_session_id,
-      website_pageviews.pageview_url,
-      orders.order_id
-FROM
-     website_pageviews
-LEFT JOIN
-     orders
-ON orders.website_session_id = website_pageviews.website_session_id
-WHERE website_pageviews.pageview_url IN ('/billing', '/billing-2')
-      AND website_pageviews.website_session_id >= 25325
-      AND website_pageviews.created_at < '2012-11-10';
- 
- ---Step 3: Finding the conversion rate-----
- SELECT
-         pageview_url,
-       COUNT(order_id),
-       COUNT(website_session_id),
-       ROUND(COUNT(order_id) / COUNT(website_session_id) * 100, 2) AS conversion_rate
-FROM billing_sessions_with_orders
-group by pageview_url;
-
-```
-**Query Result:**
-
- ![query12](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results12.PNG)
- 
- **Findings**: The version of the billing page(/billing-2) has almost 63% conversion rate which is significantlly greater than previous billing page.
- 
- 
- **Findings**: The primary traffic source is "gsearch nonbrand" with 282,706 sessions, indicating a strong reliance on this channel for website traffic.
+- **Findings**: The primary traffic source is "gsearch nonbrand" with 282,706 sessions, indicating a strong reliance on this channel for website traffic.
  
 ---
 
@@ -622,28 +579,6 @@ GROUP BY WEEK(created_at);
  
  **Findings**: Looks like bsearch tends to get roughly a third the traffic of gsearch.
 
- ### 13. Weekly Session Counts by Source
-**Background:** With gsearch doing well and the site performing better, Tom (Marketing Director) launched a second paid search channel, bsearch , around August 22. He wants weekly trended session volume since then and compare to gsearch nonbrand.
-
-**Query:**
-```sql
-SELECT
-      MIN(DATE(created_at)) AS week_start_date,
-        COUNT(CASE WHEN utm_source = 'gsearch' then website_session_id ELSE NULL END) AS gsearch_session,
-        COUNT(CASE WHEN utm_source = 'bsearch' then website_session_id ELSE NULL END) AS bsearch_session
-FROM website_sessions
-WHERE created_at > '2012-08-22'
-      AND created_at < '2012-11-29'
-      AND utm_campaign = 'nonbrand'
-GROUP BY WEEK(created_at);
-
-```
-**Query Result:**
-
- ![query13](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results13.PNG)
- 
- **Findings**: Looks like bsearch tends to get roughly a third the traffic of gsearch.
-
 ---
 
  ### 14. Mobile Session Analysis by Source
@@ -787,33 +722,6 @@ GROUP BY WEEK(website_sessions.created_at);
  
  **Findings**: Looks like we grew fairly steadily all year, and saw significant volume around the holiday months (especially the weeks of Black Friday and Cyber Monday).
 
----
-
- ### 18. Sales and Revenue Trends Over Time
-**Background:** Cindy Sharp(CEO) wants to understand seasonality trends. So she wants to take a look at 2012’s monthly and weekly volume patterns.
-
-**Query:**
-```sql
-
-SELECT
-        MIN(DATE(website_sessions.created_at)) AS week_start_date,
-      COUNT(DISTINCT website_sessions.website_session_id) AS sessions,
-      COUNT(DISTINCT orders.order_id) AS orders
-FROM  website_sessions
-LEFT JOIN orders
-ON orders.website_session_id = website_sessions.website_session_id
-WHERE YEAR(website_sessions.created_at) = 2012
-GROUP BY WEEK(website_sessions.created_at);
-
-
-
-```
-**Query Result:**
-
- ![query18](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results18.PNG)
- 
- **Findings**: Looks like we grew fairly steadily all year, and saw significant volume around the holiday months (especially the weeks of Black Friday and Cyber Monday).
-
  ---
 
  ### 19. Sales and Revenue Trends Over Time
@@ -853,3 +761,282 @@ ORDER BY 1;
  ![query19](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_result19(2).png)
  
  **Findings**: It looks that 8 am to 5 pm has the most website traffic.
+
+ ### 20. Sales and Revenue Trends Over Time
+**Background:** Cindy Sharp(CEO) Wants to add live chat support to the website to improve our customer experience and need average website session volume, by hour of day and
+by day week to staff appropriately.
+
+**Query:**
+```sql
+
+SELECT
+     hr,
+     ROUND(AVG(CASE WHEN wkdy = 0 THEN sessions ELSE NULL END), 2) AS mon,
+       ROUND(AVG(CASE WHEN wkdy = 1 THEN sessions ELSE NULL END), 2) AS tue,
+       ROUND(AVG(CASE WHEN wkdy = 2 THEN sessions ELSE NULL END), 2) AS wed,
+     ROUND(AVG(CASE WHEN wkdy = 3 THEN sessions ELSE NULL END), 2) AS thr,
+       ROUND(AVG(CASE WHEN wkdy = 4 THEN sessions ELSE NULL END), 2)AS fri,
+       ROUND(AVG(CASE WHEN wkdy = 5 THEN sessions ELSE NULL END), 2) AS sat,
+       ROUND(AVG(CASE WHEN wkdy = 6 THEN sessions ELSE NULL END), 2) AS sun
+FROM
+(SELECT
+      DATE(created_at) as created_at,
+      WEEKDAY(created_at) as wkdy,
+      HOUR(created_at) as hr,
+      count(DISTINCT website_session_id) as sessions
+FROM website_sessions
+WHERE created_at BETWEEN '2012-09-15' AND '2012-11-15'
+GROUP BY 1,2,3) AS daily_hourly_sessions
+GROUP BY 1
+ORDER BY 1;
+
+
+
+
+```
+**Query Result:**
+
+ ![query20](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_result19(2).png)
+ 
+ **Findings**: It looks that 8 am to 5 pm has the most website traffic.
+ 
+---
+
+### Product Level Sales Analysis
+
+---
+
+
+ ### 21. Monthly Sales Overview
+**Objective:** A second product launched on January 6th. Analyzing total session, conv_rate, revenue per session, product one orders and product two orders
+
+**Query:**
+```sql
+
+SELECT 
+      YEAR(created_at) as Year,
+      MONTH(created_at) as MONTH,
+      COUNT(order_id) AS number_of_sales,
+      SUM(price_usd) AS total_revenue,
+      SUM(price_usd - cogs_usd) AS total_margin
+FROM order_items
+WHERE created_at < '2013-01-04' 
+GROUP BY 1,2;
+
+```
+**Query Result:**
+
+ ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results19.PNG)
+ 
+ **Findings**: Based on this analysis Cindy wants to launch a second product.
+
+---
+
+
+ ### 22. Monthly Sales Overview
+**Objective:** Cindy Sharp(CEO) Wants to add live chat support to the website to improve our customer experience and need average website session volume, by hour of day and
+by day week to staff appropriately.
+
+**Query:**
+```sql
+
+SELECT 
+      YEAR(created_at) as Year,
+      MONTH(created_at) as MONTH,
+      COUNT(order_id) AS number_of_sales,
+      SUM(price_usd) AS total_revenue,
+      SUM(price_usd - cogs_usd) AS total_margin
+FROM order_items
+WHERE created_at < '2013-01-04' 
+GROUP BY 1,2;
+
+```
+**Query Result:**
+
+ ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results19.PNG)
+ 
+ **Findings**: Based on this analysis Cindy wants to launch a second product.
+
+---
+
+ ### 23. Product Performance Metrics Comparison
+**Objective:** A second product launched on January 6th. Analyzing total session, conv_rate, revenue per session, product one orders and product two orders
+
+**Query:**
+```sql
+
+SELECT 
+      YEAR(website_sessions.created_at) as Year,
+      MONTH(website_sessions.created_at) as Month,
+      COUNT(DISTINCT website_sessions.website_session_id) as sessions,
+      COUNT(orders.order_id) AS number_of_sales,
+	  ROUND(COUNT(DISTINCT orders.order_id)/COUNT( DISTINCT website_sessions.website_session_id)*100, 2) as conv_rate,
+      ROUND(SUM(orders.price_usd)/COUNT(DISTINCT website_sessions.website_session_id), 2) as revenue_per_session,
+      COUNT(DISTINCT CASE WHEN primary_product_id = 1 THEN orders.order_id ELSE NULL END) AS product_one_orders,
+      COUNT(DISTINCT CASE WHEN primary_product_id = 2 THEN orders.order_id ELSE NULL END) AS product_two_orders
+FROM website_sessions
+LEFT JOIN orders
+ON orders.website_session_id = website_sessions.website_session_id
+WHERE website_sessions.created_at BETWEEN '2012-04-01' AND '2013-04-01'
+GROUP BY 1,2;
+
+
+```
+**Query Result:**
+
+ ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results20.PNG)
+ 
+ **Findings**: Based on this analysis Cindy wants to launch a second product.
+---
+
+ ### 24. Product Performance Metrics Comparison
+**Background:** Morgan Rockwell (Website Manager) wants look at sessions which hit the ‘/products’ page and see where they went next. Also, wants a comparison to the 3 months leading up to launch as a baseline
+
+**Query:**
+```sql
+
+CREATE TEMPORARY TABLE product_pageviews
+SELECT
+      CASE 
+          WHEN created_at  <'2013-01-06' THEN 'A. pre_product_2'
+          WHEN created_at  >= '2013-01-06' THEN 'B. Post_product_2'
+		END AS time_period,
+        website_session_id,
+        website_pageview_id,
+        created_at
+FROM website_pageviews
+WHERE pageview_url = '/products'
+      AND created_at > '2012-10-06' AND created_at < '2013-04-06';
+
+-- Step 2: Finding the next pageview_id for the above website_session
+CREATE TEMPORARY TABLE sessions_w_next_pageview_id
+SELECT 
+      product_pageviews.time_period,
+      product_pageviews.website_session_id,
+      MIN(website_pageviews.website_pageview_id) AS next_pageview_url
+FROM product_pageviews
+LEFT JOIN 
+website_pageviews 
+ON product_pageviews.website_session_id = website_pageviews.website_session_id
+   AND website_pageviews.website_pageview_id  > product_pageviews.website_pageview_id
+GROUP BY 1,2;
+
+-- Step 3: Finding the revelant pagview_url for the above website_pageviewid 
+CREATE TEMPORARY TABLE sessions_with_next_pageview_url
+SELECT 
+     sessions_w_next_pageview_id.time_period,
+     sessions_w_next_pageview_id.website_session_id,
+     sessions_w_next_pageview_id.next_pageview_url,
+     website_pageviews.pageview_url
+FROM sessions_w_next_pageview_id
+LEFT JOIN website_pageviews
+ON sessions_w_next_pageview_id.next_pageview_url = website_pageviews.website_pageview_id;
+
+-- Step: Summarizing the data 
+SELECT 
+      time_period,
+      COUNT(website_session_id) AS sessions,
+      COUNT(next_pageview_url) AS e_next_pageview,
+      ROUND(COUNT(next_pageview_url)/COUNT(website_session_id)*100, 2) AS pct_next_pageview,
+      COUNT(CASE WHEN pageview_url = '/the-original-mr-fuzzy' THEN website_session_id ELSE NULL END) AS to_mrfuzzy,
+      ROUND(COUNT(CASE WHEN pageview_url = '/the-original-mr-fuzzy' THEN website_session_id ELSE NULL END)/
+      COUNT(website_session_id)*100, 2) AS pct_to_mrfuzzy, 
+      COUNT(CASE WHEN pageview_url = '/the-forever-love-bear' THEN website_session_id ELSE NULL END) AS to_lovebear,
+      ROUND(COUNT(CASE WHEN pageview_url = '/the-forever-love-bear' THEN website_session_id ELSE NULL END)/
+      COUNT(website_session_id)*100, 2) AS pct_to_lovebear
+FROM sessions_with_next_pageview_url
+GROUP BY time_period;
+
+
+```
+**Query Result:**
+
+ ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results21.PNG)
+ 
+ **Findings**: Looks like the percent of /products pageviews that clicked to Mr. Fuzzy has gone down since the launch of the Love Bear,but the overall clickthrough rate has gone up, so it seems to be generating additional product interest overall.
+
+ 
+ ---
+
+ ### 25. Next Pageview Metrics Post Product Launch  
+**Background:** Morgan wants further deep dive and wants to look into conversion funnels from each product page to conversion. A comparison between the two conversion funnels, for all website traffic.
+
+**Query:**
+```sql
+
+-- Step 1: Temporary table for sessions that viewed specific product pages
+CREATE TEMPORARY TABLE product_sessions AS
+SELECT 
+       website_session_id,
+       website_pageview_id,
+       pageview_url AS product_page_seen
+FROM website_pageviews
+WHERE pageview_url IN ('/the-original-mr-fuzzy', '/the-forever-love-bear')
+      AND created_at BETWEEN '2013-01-06' AND '2013-04-10';
+
+-- Step 2: Temporary table for tracking session navigation
+CREATE TEMPORARY TABLE session_navigation AS
+SELECT 
+      product_sessions.website_session_id,
+      website_pageviews.website_pageview_id,
+      website_pageviews.pageview_url,
+      CASE WHEN website_pageviews.pageview_url = '/the-original-mr-fuzzy' THEN 1 ELSE 0 END AS is_mrfuzzy_page, -- Indicator for Mr. Fuzzy page
+      CASE WHEN website_pageviews.pageview_url = '/the-forever-love-bear' THEN 1 ELSE 0 END AS is_lovebear_page, -- Indicator for Forever Love Bear page
+      CASE WHEN website_pageviews.pageview_url = '/cart' THEN 1 ELSE 0 END AS is_cart_page, -- Indicator for Cart page
+      CASE WHEN website_pageviews.pageview_url = '/shipping' THEN 1 ELSE 0 END AS is_shipping_page, -- Indicator for Shipping page
+      CASE WHEN website_pageviews.pageview_url = '/billing-2' THEN 1 ELSE 0 END AS is_billing_page, -- Indicator for Billing page
+      CASE WHEN website_pageviews.pageview_url = '/thank-you-for-your-order' THEN 1 ELSE 0 END AS is_thankyou_page -- Indicator for Thank You page
+FROM product_sessions
+LEFT JOIN website_pageviews
+ON website_pageviews.website_session_id = product_sessions.website_session_id
+   AND website_pageviews.website_pageview_id >= product_sessions.website_pageview_id;
+
+-- Step 3: Temporary table summarizing session interactions
+CREATE TEMPORARY TABLE session_summary AS
+SELECT 
+      website_session_id, 
+      COUNT(website_pageview_id) AS total_pageviews, -- Total pageviews for the session
+      MAX(is_mrfuzzy_page) AS visited_mrfuzzy, -- Whether Mr. Fuzzy page was visited
+      MAX(is_lovebear_page) AS visited_lovebear, -- Whether Forever Love Bear page was visited
+      MAX(is_cart_page) AS visited_cart, -- Whether Cart page was visited
+      MAX(is_shipping_page) AS visited_shipping, -- Whether Shipping page was visited
+      MAX(is_billing_page) AS visited_billing, -- Whether Billing page was visited
+      MAX(is_thankyou_page) AS visited_thankyou -- Whether Thank You page was visited
+FROM session_navigation
+GROUP BY website_session_id;
+
+-- Step 4: Summarizing session behaviors per product
+CREATE TEMPORARY TABLE summarizing AS
+SELECT 
+	CASE 
+          WHEN visited_mrfuzzy = 1 THEN 'Mr. Fuzzy' -- Product viewed: Mr. Fuzzy
+          WHEN visited_lovebear = 1 THEN 'Forever Love Bear' -- Product viewed: Forever Love Bear
+	END AS product_viewed, 
+    COUNT(website_session_id) AS total_sessions, -- Total sessions for the product
+    SUM(visited_cart) AS sessions_reached_cart, -- Sessions reaching Cart page
+    SUM(visited_shipping) AS sessions_reached_shipping, -- Sessions reaching Shipping page
+    SUM(visited_billing) AS sessions_reached_billing, -- Sessions reaching Billing page
+    SUM(visited_thankyou) AS sessions_reached_thankyou -- Sessions reaching Thank You page
+FROM session_summary
+GROUP BY product_viewed;
+
+-- Step 5: Calculating funnel conversion rates
+SELECT 
+      product_viewed,
+      ROUND(sessions_reached_cart / total_sessions * 100, 2) AS prdt_click_rate, -- Product page to Cart conversion rate
+      ROUND(sessions_reached_shipping / sessions_reached_cart * 100, 2) AS cart_click_rate, -- Cart to Shipping conversion rate
+      ROUND(sessions_reached_billing / sessions_reached_shipping * 100, 2) AS shipping_click_rate, -- Shipping to Billing conversion rate
+      ROUND(sessions_reached_thankyou / sessions_reached_billing * 100, 2) AS billing_click_rate -- Billing to Thank You conversion rate
+FROM summarizing;
+
+
+```
+**Query Result:**
+
+ ![query21](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results22.PNG)
+ 
+ **Findings**: Looks like the new product ‘Forever Love Bear’ was a great success. that the Love Bear has a better click rate to the ‘/cart’ page and comparable rates throughout the rest of the funnel.
+
+
+ 
+
