@@ -618,9 +618,238 @@ GROUP BY WEEK(created_at);
 ```
 **Query Result:**
 
- ![query12](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results13.PNG)
+ ![query13](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results13.PNG)
  
  **Findings**: Looks like bsearch tends to get roughly a third the traffic of gsearch.
+
+ ### 13. Weekly Session Counts by Source
+**Background:** With gsearch doing well and the site performing better, Tom (Marketing Director) launched a second paid search channel, bsearch , around August 22. He wants weekly trended session volume since then and compare to gsearch nonbrand.
+
+**Query:**
+```sql
+SELECT
+      MIN(DATE(created_at)) AS week_start_date,
+        COUNT(CASE WHEN utm_source = 'gsearch' then website_session_id ELSE NULL END) AS gsearch_session,
+        COUNT(CASE WHEN utm_source = 'bsearch' then website_session_id ELSE NULL END) AS bsearch_session
+FROM website_sessions
+WHERE created_at > '2012-08-22'
+      AND created_at < '2012-11-29'
+      AND utm_campaign = 'nonbrand'
+GROUP BY WEEK(created_at);
+
+```
+**Query Result:**
+
+ ![query13](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results13.PNG)
  
+ **Findings**: Looks like bsearch tends to get roughly a third the traffic of gsearch.
+
+---
+
+ ### 14. Mobile Session Analysis by Source
+**Background:** Tom would like to learn more about the bsearch nonbrand campaign. He wants us to pull the percentage of traffic coming on Mobile , and compare that to gsearch.
+
+**Query:**
+```sql
+
+ SELECT 
+      utm_source,
+      COUNT(website_Session_id) AS sessions,
+      COUNT(DISTINCT CASE WHEN device_type = 'mobile' THEN website_Session_id ELSE NULL END) AS mobile_sessions,
+	  ROUND(COUNT(DISTINCT CASE WHEN device_type = 'mobile' THEN website_Session_id ELSE NULL END)
+      / COUNT(website_Session_id)*100, 2) AS pct_mobile
+FROM website_sessions
+WHERE website_sessions.created_at BETWEEN '2012-08-22' AND '2012-11-30'
+      AND website_sessions.utm_campaign = 'nonbrand'
+GROUP BY utm_source;
 
 
+```
+**Query Result:**
+
+ ![query14](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results14.PNG)
+ 
+ **Findings**: Gsearch accounted for approximately 24.52% of mobile sessions, indicating its importance in mobile marketing strategies.
+ 
+ ---
+
+  ### 15. Device Performance by Source
+**Background:** Tom wants nonbrand conversion rates from session to order for gsearch and bsearch, and sliced data by device type to optimize the bidding strategy. He wants the data from August 22 to September 18.
+
+**Query:**
+```sql
+
+SELECT 
+      website_sessions.device_type,
+ 	  website_sessions.utm_source,
+      COUNT(website_sessions.website_Session_id) AS sessions,
+      COUNT(orders.order_id) AS orders,
+      ROUND(COUNT(orders.order_id)/COUNT(website_sessions.website_Session_id)*100, 2) AS conv_rate
+FROM website_sessions
+LEFT JOIN orders
+ON website_sessions.website_Session_id = orders.website_Session_id
+WHERE website_sessions.created_at BETWEEN '2012-08-22' AND '2012-09-18'
+      AND website_sessions.utm_campaign = 'nonbrand'
+GROUP BY device_type, utm_source
+ORDER BY website_sessions.device_type;
+
+```
+**Query Result:**
+
+ ![query15](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results15.PNG)
+ 
+ **Findings**: Seems like bsearch sessions don't have good performance. Tom is going to bid down bsearch based on its underperformance.
+
+---
+
+ ### 16. bsearch sessions after changing the bidding strategy
+**Background:** Based on previous analysis, Tom bid down bsearch nonbrand on December 2nd. He wants weekly session volume for gsearch and bsearch nonbrand, broken down by device, since November 4th
+
+**Query:**
+```sql
+
+SELECT 
+      MIN(DATE(created_at)) as week_start_date,
+	  COUNT(DISTINCT CASE WHEN device_type = 'desktop' AND utm_source = 'gsearch' THEN website_session_id ELSE NULL END) AS g_dtop_sessions,
+	  COUNT(DISTINCT CASE WHEN device_type = 'desktop' AND utm_source = 'bsearch' THEN website_session_id ELSE NULL END) AS b_dtop_sessions,
+      COUNT(DISTINCT CASE WHEN device_type = 'mobile' AND utm_source = 'gsearch' THEN website_session_id ELSE NULL END) AS g_mob_sessions,
+	  COUNT(DISTINCT CASE WHEN device_type = 'mobile' AND utm_source = 'bsearch' THEN website_session_id ELSE NULL END) AS b_mob_sessions
+FROM website_sessions
+WHERE website_sessions.created_at > '2012-11-04'
+      AND website_sessions.created_at < '2012-12-22'
+      AND website_sessions.utm_campaign = 'nonbrand'
+GROUP BY YEARWEEK(created_at);
+
+
+```
+**Query Result:**
+
+ ![query16](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results16.PNG)
+ 
+ **Findings**: Looks like bsearch traffic dropped off a bit after the bid went down.
+
+ ---
+
+ ### 17. bsearch sessions after changing the bidding strategy
+**Background:** Based on previous analysis, Tom bid down bsearch nonbrand on December 2nd. He wants weekly session volume for gsearch and bsearch nonbrand, broken down by device, since November 4th
+
+**Query:**
+```sql
+
+SELECT 
+      MIN(DATE(created_at)) as week_start_date,
+	  COUNT(DISTINCT CASE WHEN device_type = 'desktop' AND utm_source = 'gsearch' THEN website_session_id ELSE NULL END) AS g_dtop_sessions,
+	  COUNT(DISTINCT CASE WHEN device_type = 'desktop' AND utm_source = 'bsearch' THEN website_session_id ELSE NULL END) AS b_dtop_sessions,
+      COUNT(DISTINCT CASE WHEN device_type = 'mobile' AND utm_source = 'gsearch' THEN website_session_id ELSE NULL END) AS g_mob_sessions,
+	  COUNT(DISTINCT CASE WHEN device_type = 'mobile' AND utm_source = 'bsearch' THEN website_session_id ELSE NULL END) AS b_mob_sessions
+FROM website_sessions
+WHERE website_sessions.created_at > '2012-11-04'
+      AND website_sessions.created_at < '2012-12-22'
+      AND website_sessions.utm_campaign = 'nonbrand'
+GROUP BY YEARWEEK(created_at);
+
+
+```
+**Query Result:**
+
+ ![query17](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results16.PNG)
+ 
+ **Findings**: Looks like bsearch traffic dropped off a bit after the bid went down.
+ 
+ ---
+
+### Analyzing Seasonality & Business Patterns
+
+---
+
+ ### 18. Sales and Revenue Trends Over Time
+**Background:** Cindy Sharp(CEO) wants to understand seasonality trends. So she wants to take a look at 2012’s monthly and weekly volume patterns.
+
+**Query:**
+```sql
+
+SELECT
+        MIN(DATE(website_sessions.created_at)) AS week_start_date,
+      COUNT(DISTINCT website_sessions.website_session_id) AS sessions,
+      COUNT(DISTINCT orders.order_id) AS orders
+FROM  website_sessions
+LEFT JOIN orders
+ON orders.website_session_id = website_sessions.website_session_id
+WHERE YEAR(website_sessions.created_at) = 2012
+GROUP BY WEEK(website_sessions.created_at);
+
+
+
+```
+**Query Result:**
+
+ ![query18](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results18.PNG)
+ 
+ **Findings**: Looks like we grew fairly steadily all year, and saw significant volume around the holiday months (especially the weeks of Black Friday and Cyber Monday).
+
+---
+
+ ### 18. Sales and Revenue Trends Over Time
+**Background:** Cindy Sharp(CEO) wants to understand seasonality trends. So she wants to take a look at 2012’s monthly and weekly volume patterns.
+
+**Query:**
+```sql
+
+SELECT
+        MIN(DATE(website_sessions.created_at)) AS week_start_date,
+      COUNT(DISTINCT website_sessions.website_session_id) AS sessions,
+      COUNT(DISTINCT orders.order_id) AS orders
+FROM  website_sessions
+LEFT JOIN orders
+ON orders.website_session_id = website_sessions.website_session_id
+WHERE YEAR(website_sessions.created_at) = 2012
+GROUP BY WEEK(website_sessions.created_at);
+
+
+
+```
+**Query Result:**
+
+ ![query18](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_results18.PNG)
+ 
+ **Findings**: Looks like we grew fairly steadily all year, and saw significant volume around the holiday months (especially the weeks of Black Friday and Cyber Monday).
+
+ ---
+
+ ### 19. Sales and Revenue Trends Over Time
+**Background:** Cindy Sharp(CEO) Wants to add live chat support to the website to improve our customer experience and need average website session volume, by hour of day and
+by day week to staff appropriately.
+
+**Query:**
+```sql
+
+SELECT
+     hr,
+     ROUND(AVG(CASE WHEN wkdy = 0 THEN sessions ELSE NULL END), 2) AS mon,
+       ROUND(AVG(CASE WHEN wkdy = 1 THEN sessions ELSE NULL END), 2) AS tue,
+       ROUND(AVG(CASE WHEN wkdy = 2 THEN sessions ELSE NULL END), 2) AS wed,
+     ROUND(AVG(CASE WHEN wkdy = 3 THEN sessions ELSE NULL END), 2) AS thr,
+       ROUND(AVG(CASE WHEN wkdy = 4 THEN sessions ELSE NULL END), 2)AS fri,
+       ROUND(AVG(CASE WHEN wkdy = 5 THEN sessions ELSE NULL END), 2) AS sat,
+       ROUND(AVG(CASE WHEN wkdy = 6 THEN sessions ELSE NULL END), 2) AS sun
+FROM
+(SELECT
+      DATE(created_at) as created_at,
+      WEEKDAY(created_at) as wkdy,
+      HOUR(created_at) as hr,
+      count(DISTINCT website_session_id) as sessions
+FROM website_sessions
+WHERE created_at BETWEEN '2012-09-15' AND '2012-11-15'
+GROUP BY 1,2,3) AS daily_hourly_sessions
+GROUP BY 1
+ORDER BY 1;
+
+
+
+
+```
+**Query Result:**
+
+ ![query19](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_result19(2).png)
+ 
+ **Findings**: It looks that 8 am to 5 pm has the most website traffic.
