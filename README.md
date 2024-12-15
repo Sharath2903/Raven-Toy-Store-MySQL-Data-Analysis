@@ -506,7 +506,52 @@ FROM total_sessions_for_each_page2;
  ![query11](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/query_result11.PNG)
  
  **Findings**: Looks like we should focus on the lander, Mr. Fuzzy page , and the billing page , which have the lowest click rates.
+   ---
+
+### 12. Conversion Rates for Billing Pages
+**Background:** Based on conversion funnel analysis, Morgan tested an updated billing page(/billing -2). She wants a comparison between the old vs new billing page.
+```sql
+--Step 1: FInding the date in which the new billing page (/billing-2) was introduced
+
+SELECT
+      MIN(website_session_id)
+FROM
+      website_pageviews
+WHERE pageview_url = '/billing-2';
+
+--Step 2: Finding the sessions having orders--
+CREATE temporary table billing_sessions_with_orders
+SELECT
+      website_pageviews.website_session_id,
+      website_pageviews.pageview_url,
+      orders.order_id
+FROM
+     website_pageviews
+LEFT JOIN
+     orders
+ON orders.website_session_id = website_pageviews.website_session_id
+WHERE website_pageviews.pageview_url IN ('/billing', '/billing-2')
+      AND website_pageviews.website_session_id >= 25325
+      AND website_pageviews.created_at < '2012-11-10';
+ 
+ ---Step 3: Finding the conversion rate-----
+ SELECT
+         pageview_url,
+       COUNT(order_id),
+       COUNT(website_session_id),
+       ROUND(COUNT(order_id) / COUNT(website_session_id) * 100, 2) AS conversion_rate
+FROM billing_sessions_with_orders
+group by pageview_url;
+
+```
+**Query Result:**
+
+ ![query12](https://github.com/Sharath2903/MySQL_project_Kravenfuzzyfactory/blob/main/images/Query_results12.PNG)
+ 
+ **Findings**: The version of the billing page(/billing-2) has almost 63% conversion rate which is significantlly greater than previous billing page.
  
 
-  
+
+
+
 
