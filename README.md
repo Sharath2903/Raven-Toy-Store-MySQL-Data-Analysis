@@ -184,9 +184,7 @@ GROUP BY
  
 ---
 
-### Analyzing Website Traffic Sources and Optimizing the Bids
-
----
+## Analyzing Website Traffic Sources and Optimizing the Bids
 
 ### 6. Top Website Pages by Session Volume
 **Objective**: Morgan Rockwell (Website Manager) wanted to know which pages generate the most traffic.
@@ -587,9 +585,8 @@ GROUP BY
  
 ---
 
-### Analysing Channel Portfolio
+## Analysing Channel Portfolio
 
----
 
 ### 13. Expanded Channel Portfolio
 **Background:** With gsearch doing well and the site performing better, Tom (Marketing Director) launched a second paid search channel, bsearch , around August 22. He wants weekly trended session volume since then and compare to gsearch nonbrand.
@@ -771,9 +768,7 @@ ORDER BY 1;
  
 ---
 
-### Product Level Sales Analysis
-
----
+## Product Level Sales Analysis
 
 
  ### 19. Monthly Sales Overview
