@@ -15,9 +15,9 @@ the goal is to collaborate with the CEO, Head of Marketing, and Website Manager 
 - Device Performance Assessment: Compare conversion rates and user engagement across different devices (desktop vs. mobile) to tailor marketing efforts and optimize bids based on performance.
 - User Engagement and Website Performance Monitoring: Analyze user engagement metrics such as bounce rates and session volumes on key landing pages to improve website design and content, ultimately enhancing user experience and conversion rates.
 
-## Business Problems and Solutions
+# Business Problems and Solutions
 
-### Analyzing Website Traffic Sources and Optimizing the Bids
+## Analyzing Website Traffic Sources and Optimizing the Bids
 
 
 ### 1. Site traffic breakdown
