@@ -623,7 +623,6 @@ GROUP BY WEEK(created_at);
 **Query:**
 ```sql
 
- SELECT 
 SELECT
     utm_source,
     COUNT(website_session_id) AS sessions,
