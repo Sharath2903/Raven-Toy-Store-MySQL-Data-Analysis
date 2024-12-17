@@ -979,9 +979,8 @@ FROM summarizing;
 
 # Key Findings Summary
 
-## Traffic and Conversion Performance
-- **"Gsearch Nonbrand" Campaign**: Achieved 4,140 sessions, 311 orders, and a sessions-to-order conversion rate of **7.52%** (exceeding the **4% target**).
-- **Device Insights**: Desktop conversion rate of **8.82%** vs. mobile at **5.66%**, highlighting opportunities to optimize for mobile users.
+**Improved Traffic and Campaign Analysis:** Conducted a deep dive into site traffic, identifying gsearch as the top source with 282,706 sessions and highlighting performance gaps like the 2.88% conversion rate (below the 4% target). Expanded analysis of the new bsearch channel revealed steady growth, peaking at 1,093 weekly sessions by November 2012.
+
 
 ## Landing Page Optimization
 - A/B testing between the homepage ("/home") and a custom landing page ("/lander-1") resulted in a significantly lower bounce rate for "/lander-1" (**28.82%** vs. **45.86%**).
