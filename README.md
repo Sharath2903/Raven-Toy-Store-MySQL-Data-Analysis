@@ -987,12 +987,6 @@ FROM summarizing;
 - A/B testing between the homepage ("/home") and a custom landing page ("/lander-1") resulted in a significantly lower bounce rate for "/lander-1" (**28.82%** vs. **45.86%**).
 - After routing all traffic to "/lander-1," the overall paid search bounce rate steadily decreased, enhancing user engagement.
 
-## Impact of New Product Launch
-- After launching a second product on January 6th:
-  - Sales increased by **X%**, total revenue rose by **Y%**, and total margin improved by **Z%**.
-  - Navigation from the "/products" page to product-specific pages grew, reflecting improved user interest.
-- Conversion funnel metrics: Product page to cart conversion for Mr. Fuzzy at **A%**, and Forever Love Bear at **B%**, with significant improvements across each stage.
-
 ## Device and Campaign Analysis
 - **Mobile Traffic Share**: The "bsearch nonbrand" campaign drove **47.41% mobile sessions**, surpassing the "gsearch nonbrand" campaign at **36.60%**, underscoring the importance of mobile optimization.
 - Conversion rates for desktop traffic consistently outperformed mobile traffic across both campaigns.
