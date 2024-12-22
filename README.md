@@ -23,7 +23,7 @@ the goal is to collaborate with the CEO, Head of Marketing, and Website Manager 
 ### 1. Site traffic breakdown
 **Objective**: Cindy Sharp (CEO) requested a breakdown of traffic sources by UTM source, campaign, and referring domain.
 
-  
+**Query:**
   ```sql
 SELECT
     COUNT(DISTINCT ws.website_session_id) AS sessions,
@@ -54,7 +54,7 @@ WHERE
 ### 2. Gsearch Conversion Rate Analysis
 **Objective**: Tom Parmesan (Marketing Director) wanted to evaluate the conversion rate of "gsearch" traffic, expecting it to be at least 4%.
 
-**Query**:
+**Query:**
  
  ```sql
 SELECT
