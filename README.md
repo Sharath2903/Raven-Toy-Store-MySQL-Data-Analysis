@@ -188,6 +188,7 @@ GROUP BY
 
 ### 6. Top Website Pages by Session Volume
 **Objective**: Morgan Rockwell (Website Manager) wanted to know which pages generate the most traffic.
+
 **Query**:
  
  ```sql
@@ -217,6 +218,7 @@ GROUP BY
  
 ### 7. Top Entry Pages
 **Objective**: Morgan Rockwell (Website Manager) wants us to pull all entry pages and rank them on entry volume.
+
 **Query**:
  
  ```sql
@@ -335,6 +337,7 @@ ON
 **Background:** Based on the bounce rate analysis, Morgan ran a new custom landing page (/lander 1)  in a 50/50 test against the homepage (/home) for our gsearch nonbrand traffic. Morgan Wants to know the bounce rates for the two groups.
 
 **Query:**
+
 ```sql
 -- Step 0: Finding the day new homepage '/lander-1' was introduced
 SELECT 
@@ -483,6 +486,8 @@ GROUP BY
 
 ### 11. Click Rates Across Key Pages
 **Background:** Morgan wants to Understand click-through rates for various pages was essential for optimizing user navigation.
+
+**Query:**
 ```sql
 -- Step 1: Select all the pageviews with relevant sessions
 CREATE TEMPORARY TABLE session_level_made_it_flag AS
@@ -540,6 +545,8 @@ FROM total_sessions_for_each_page2;
 
 ### 12. Conversion Rates for Billing Pages
 **Background:** Based on conversion funnel analysis, Morgan tested an updated billing page(/billing -2). She wants a comparison between the old vs new billing page.
+
+**Query:**
 ```sql
 -- Step 1: Finding the date when the new billing page (/billing-2) was introduced
 SELECT 
@@ -592,6 +599,7 @@ GROUP BY
 **Background:** With gsearch doing well and the site performing better, Tom (Marketing Director) launched a second paid search channel, bsearch , around August 22. He wants weekly trended session volume since then and compare to gsearch nonbrand.
 
 **Query:**
+
 ```sql
 SELECT
     MIN(DATE(created_at)) AS week_start_date,
@@ -618,6 +626,7 @@ GROUP BY WEEK(created_at);
 **Background:** Tom would like to learn more about the bsearch nonbrand campaign. He wants us to pull the percentage of traffic coming on Mobile , and compare that to gsearch.
 
 **Query:**
+
 ```sql
 
 SELECT
@@ -643,6 +652,7 @@ GROUP BY utm_source;
 **Background:** Tom wants nonbrand conversion rates from session to order for gsearch and bsearch, and sliced data by device type to optimize the bidding strategy. He wants the data from August 22 to September 18.
 
 **Query:**
+
 ```sql
 
 SELECT 
@@ -673,6 +683,7 @@ ORDER BY website_sessions.device_type;
 **Background:** Based on previous analysis, Tom bid down bsearch nonbrand on December 2nd. He wants weekly session volume for gsearch and bsearch nonbrand, broken down by device, since November 4th
 
 **Query:**
+
 ```sql
 
 SELECT 
@@ -706,6 +717,7 @@ GROUP BY YEARWEEK(created_at);
 **Background:** Cindy Sharp(CEO) wants to understand seasonality trends. So she wants to take a look at 2012’s monthly and weekly volume patterns.
 
 **Query:**
+
 ```sql
 
 SELECT
@@ -732,6 +744,7 @@ GROUP BY YEARWEEK(website_sessions.created_at);
 by day week to staff appropriately.
 
 **Query:**
+
 ```sql
 
 SELECT
