@@ -26,22 +26,19 @@ the goal is to collaborate with the CEO, Head of Marketing, and Website Manager 
 **Query:**
   ```sql
 SELECT
-    COUNT(DISTINCT ws.website_session_id) AS sessions,
-    COUNT(o.order_id) AS orders,
-    ROUND(
-        COUNT(o.order_id) * 100.0 / COUNT(DISTINCT ws.website_session_id), 
-        2
-    ) AS sessions_to_order_conversion_rate
+    utm_source,
+    utm_campaign,
+    http_referer,
+    COUNT(website_sessions) AS sessions
 FROM
-    website_sessions ws
-LEFT JOIN
-    orders o
-ON 
-    o.website_session_id = ws.website_session_id
+    website_sessions 
 WHERE
-    ws.created_at < '2012-04-14'
-    AND ws.utm_source = 'gsearch'
-    AND ws.utm_campaign = 'nonbrand';
+    created_at < '2012-04-12'
+GROUP BY
+    utm_source,
+    utm_campaign,
+    http_referer
+ORDER BY sessions DESC;
   ```
  **Query Result:**
  
