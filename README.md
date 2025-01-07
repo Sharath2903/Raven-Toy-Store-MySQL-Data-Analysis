@@ -1,7 +1,7 @@
-# Optimizing eCommerce Performance: SQL Analysis for Kraven Fuzzy Factory
+# Optimizing eCommerce Performance: SQL Analysis for Raven Toy Store
 
 ## Project Overview
-This project focuses on analyzing the eCommerce database of Kraven Fuzzy Factory, an online retailer that recently launched its first product. As an eCommerce Database Analyst, 
+This project focuses on analyzing the eCommerce database of Raven Toy Store, an online retailer that recently launched its first product. As an eCommerce Database Analyst, 
 the goal is to collaborate with the CEO, Head of Marketing, and Website Manager to optimize marketing channels, measure website performance, and assess the impact of product launches.
 
 ## Entity Relationship Diagram (ERD)
